@@ -17,33 +17,41 @@ import { PostInterface } from '../../@types';
 import './App.scss';
 import { DarkContext, DarkProvider } from '../../contexts/DarkContext';
 import DarkModeComponent from './DarkModeComponent';
+import { PostsContext } from '../../contexts/PostsContext';
 
 function App() {
   const { zenMode } = useContext(ZenModeContext);
+  const posts = useContext(PostsContext);
 
   // Appel API : articles
-  const [posts, setPosts] = useState<PostInterface[]>([]);
+  // const [posts, setPosts] = useState<PostInterface[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // useEffect(() => {
+  //   async function fetchPosts() {
+  //     try {
+  //       const { data } = await axios.get(
+  //         'https://oblog-react.vercel.app/api/posts'
+  //       );
+
+  //       // on retourne
+  //       setPosts(data);
+  //     } catch (error) {
+  //       // eslint-disable-next-line no-console
+  //       console.error(error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+
+  //   fetchPosts();
+  // }, []);
+
   useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const { data } = await axios.get(
-          'https://oblog-react.vercel.app/api/posts'
-        );
-
-        // on retourne
-        setPosts(data);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
+    if (posts.length) {
+      setIsLoading(false);
     }
-
-    fetchPosts();
-  }, []);
+  }, [posts]);
 
   return (
     <div className={zenMode ? 'app app--zen' : 'app'}>
@@ -62,10 +70,10 @@ function App() {
               si le `path` (chemin) de la route correspond à l'URL
               alors on affiche `element`
             */}
-            <Route path="/" element={<Posts list={posts} />} /> {/* accueil */}
+            <Route path="/" element={<Posts />} /> {/* accueil */}
             {/* <Route path="/category/react" element={<h1>React</h1>} /> */}
             {/* on utilise les routes paramétrées */}
-            <Route path="/category/:slug" element={<Posts list={posts} />} />
+            <Route path="/category/:slug" element={<Posts />} />
             <Route path="/post/:slug" element={<SinglePost />} />
             <Route path="/about" element={<h1>À propos</h1>} />
             {/* Pour toutes les autres URL, on affiche la page d'erreur */}

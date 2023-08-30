@@ -5,6 +5,7 @@ import App from './components/App/App';
 
 import { CategoriesProvider } from './contexts/CategoriesContext';
 import { ZenModeProvider } from './contexts/ZenModeContext';
+import { PostsProvider } from './contexts/PostsContext';
 
 import './styles/index.scss';
 
@@ -15,10 +16,12 @@ const root = ReactDOM.createRoot(
 root.render(
   // Context : utilisation
   <CategoriesProvider>
-    <ZenModeProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ZenModeProvider>
+    <PostsProvider>
+      <ZenModeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ZenModeProvider>
+    </PostsProvider>
   </CategoriesProvider>
 );

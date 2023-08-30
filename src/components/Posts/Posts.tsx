@@ -1,17 +1,17 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Post from '../Post/Post';
+
+import { PostsContext } from '../../contexts/PostsContext';
 
 import { PostInterface } from '../../@types';
 
 import './Posts.scss';
 
-interface PostsProps {
-  list: PostInterface[];
-}
+function Posts() {
+  const posts = useContext(PostsContext);
 
-function Posts({ list }: PostsProps) {
   // React Router fournit un hook pour facilement
   // récupérer les paramètres d'URL
   // `useParams` renvoie un objet avec les paramètres en propriété
@@ -24,10 +24,10 @@ function Posts({ list }: PostsProps) {
   // ALORS je filtre mes articles
   // SINON j'affiche tout
   const filteredPosts = slug
-    ? list.filter(
+    ? posts.filter(
         (post) => post.category.slug.toLowerCase() === slug.toLowerCase()
       )
-    : list; // ici c'est l'accueil
+    : posts; // ici c'est l'accueil
 
   const items = filteredPosts.map((post) => <Post key={post.id} data={post} />);
 
